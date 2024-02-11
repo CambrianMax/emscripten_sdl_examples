@@ -11,7 +11,7 @@
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 SDL_Texture *texture = NULL;
-SDL_Rect destinationRect = {100, 100, 0, 0};
+SDL_Rect destinationRect = {0, 0, 0, 0};
 
 Mix_Music *music = NULL;
 
@@ -62,7 +62,7 @@ int main() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     
     //Load image
-    SDL_Surface *surface = IMG_Load("assets/triangle.png");
+    SDL_Surface *surface = IMG_Load("assets/happy_hog.png");
     if (!surface) {
         printf("Failed to load image: %s\n", IMG_GetError());
         return 1;
