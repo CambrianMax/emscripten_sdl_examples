@@ -1,4 +1,7 @@
-emsdk activate
+REM You need to call emsdk activate in the Emscripten Directoryfirst.  
+REM I put that directory path in my  path variable so it can be called from this script.
+
+call emsdk activate
 
 emcc source/main.c -o main.html -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_MIXER=2  -s  SDL2_IMAGE_FORMATS=["png"] -sUSE_OGG=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file assets
 

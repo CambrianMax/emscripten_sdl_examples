@@ -3,7 +3,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+#if DESKTOP
+#else
 #include <emscripten.h>
+#endif 
 #include <stdlib.h>
 
 
@@ -19,11 +22,34 @@ void play_music() {
     Mix_PlayMusic(music, 0);
 }
 
-void render_loop() {
+void desktop_render_loop()
+{
     SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
+    int quit = 0;
+    while (!quit) {
+        // Handle events
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
+                quit = 1;
+        }
+        
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, texture, NULL, &destinationRect);
+        SDL_RenderPresent(renderer);
+    }
+}
+
+
+void emscripten_render_loop() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) 
+    {
+        if (event.type == SDL_QUIT) 
+        {
+#if DESKTOP
+#else
             emscripten_cancel_main_loop();
+#endif
             break;
         }
     }
@@ -77,11 +103,18 @@ int main() {
         return 1;
     }
     
+#if DESKTOP
+    play_music();
+    
+    desktop_render_loop();
+    
+#else
     //play sound
     emscripten_async_call(play_music, NULL, 10);
     
     //draw image
-    emscripten_set_main_loop(render_loop, 0, 1);
+    emscripten_set_main_loop(emscripten_render_loop, 0, 1);
+#endif
     
     //Cleanup
     SDL_FreeSurface(surface);
