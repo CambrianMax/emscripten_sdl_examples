@@ -27,16 +27,6 @@ GLuint vbo;
 void init_gl()
 {
     
-    // Create OpenGL ES context
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-    glContext = SDL_GL_CreateContext(window);
-    if (!glContext) {
-        fprintf(stderr, "OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
-        
-    }
-    
     // Compile shaders
     GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
@@ -105,7 +95,37 @@ void load_image(char* filename)
 }
 
 
-void render_loop()
+
+void desktop_render_loop()
+{
+    
+    SDL_Event event;
+    int quit = 0;
+    while (!quit) {
+        // Handle events
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
+                quit = 1;
+        }
+        // Clear the screen
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        // Use shader program
+        glUseProgram(shader_program);
+        
+        // Bind texture
+        glBindTexture(GL_TEXTURE_2D, texture);
+        
+        // Draw the quad
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        
+        // Present the renderer
+        SDL_GL_SwapWindow(window);
+    }
+}
+
+
+void emscripten_render_loop()
 {
     
     // Clear the screen
