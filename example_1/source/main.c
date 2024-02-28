@@ -3,11 +3,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+#include <stdlib.h>
 #if DESKTOP
 #else
 #include <emscripten.h>
 #endif 
-#include <stdlib.h>
 
 
 

@@ -7,6 +7,7 @@ example_1 -> display an image with sdl_image and play a sound with sdl_mixer
 
 example_2 -> Use opengl2es and shaders to display an image
 
+example_2 -> Simple game with sound, input, and text rendering.  You can "play" it here-> https://cambrianmax.cool/hog_demo/main.html
 
 
 *Note I have been adding functionality to the examples so that they can be compiled
